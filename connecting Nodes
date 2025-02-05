@@ -2,3 +2,35 @@
 #For Calico the suggested use of this IP address network you can use any network if you want
 kubeadm init --pod-network-cidr=192.168.0.0/16
 
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+By default, apps won’t get scheduled on the master node. If you want to use the master node for scheduling apps, taint the master node.
+kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+
+
+#for worker node
+kubeadm join 172.31.39.25:6443 --token zlcfil.xoqhe1i8ff3c30ie --discovery-token-ca-cert-hash sha256:6c5e5d194d2b7ee4b5b69301a84a36569e34
+
+kubectl label node  ip-172-31-33-253.ap-south-1.compute.internal   node-role.kubernetes.io/worker=worker
+
+You verify all the cluster component health statuses using the following command.
+kubectl get --raw='/readyz?verbose'
+
+After Installing Calico CNI, nodes state will change to Ready state, DNS service inside the cluster would be functional and containers can start communicating with each other.
+To install Calico CNI, run the following command from the master node
+To install Calico first we need to download the Calico file from the below url
+
+curl -O https://raw.githubusercontent.com/projectcalico/calico/master/manifests/calico.yaml
+
+# Auto-detect the BGP IP address.
+            - name: IP
+              value: "autodetect"
+            - name: IP_AUTODETECTION_METHOD
+              value: "interface=enX0"
+kubectl apply -f calico.yaml
+
+kubectl -n kube-system exec -it calico-node-cq56t -- bash
+
+ calico-node -show-status
