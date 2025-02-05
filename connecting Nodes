@@ -1,0 +1,4 @@
+#connecting the node
+#For Calico the suggested use of this IP address network you can use any network if you want
+kubeadm init --pod-network-cidr=192.168.0.0/16
+
