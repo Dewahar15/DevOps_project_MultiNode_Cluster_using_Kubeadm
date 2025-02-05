@@ -1,5 +1,5 @@
 # DevOps_project_MultiNode_Cluster_using_Kubeadm
-### run the script 
+### run the Multi_Node_setup script 
 
 ### now initialze the kubedm
 ![image](https://github.com/user-attachments/assets/9b9c719d-8a47-4a3f-919e-3bda5d683447)
